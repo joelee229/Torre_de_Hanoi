@@ -9,21 +9,27 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
-import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
-import javax.swing.JTable;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
 
 public class TorredeHanoi extends JFrame {
 
 	private JPanel contentPane;
 	private int dis;
-	private String est;
+	String res = "";
 
-	/**
-	 * Launch the application.
-	 */
+	public String mov(int disco, char origem, char dest, char manobra){
+		
+		if(disco == 1){
+			res+="movimento disco "+disco+" de "+origem+" para "+dest+"\n";
+			//System.out.println("movimento disco "+disco+" de "+origem+" para "+dest+"\n");
+		}else{
+			mov(disco -1, origem, manobra, dest);
+			res+="movimento disco "+disco+" de " +origem+" para "+dest+"\n";
+			//System.out.println("movimento disco "+disco+" de " +origem+" para "+dest+"\n");
+			mov(disco-1, manobra, dest, origem);
+		}
+		return res;
+	}
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -41,7 +47,7 @@ public class TorredeHanoi extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	
+
 	public TorredeHanoi() {
 		super("Torre de Hanoi");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -58,52 +64,33 @@ public class TorredeHanoi extends JFrame {
 
 		JTextArea textArea = new JTextArea();
 		textArea.setEditable(false);
-		textArea.setBounds(251, 12, 252, 238);
+		textArea.setBounds(251, 12, 282, 238);
 		contentPane.add(textArea);
 
-		JButton btnParte = new JButton("1ª Parte");
+		JButton btnParte = new JButton("1ï¿½ Parte");
 		btnParte.setBounds(41, 164, 115, 25);
 		btnParte.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					dis = Integer.parseInt(JOptionPane.showInputDialog(null,"Digite a quantidade de discos:","Discos",JOptionPane.INFORMATION_MESSAGE));
 					int res =(int) Math.pow(2, dis)-1;
-					textArea.setText("O número mínimo de \nmovimentos é igual a "+res);
+					textArea.setText("O nÃºmero mÃ­nimo de \nmovimentos Ã© igual a  "+res);
 				}catch(Exception ae) {}
 			}
 		});
 		contentPane.add(btnParte);
 
-		JButton btnParte_1 = new JButton("2ª Parte");
+		JButton btnParte_1 = new JButton("2ï¿½ Parte");
 		btnParte_1.setBounds(41, 201, 115, 25);
 		btnParte_1.addActionListener(new ActionListener() {
-			public void mov(int disco, char origem, char dest, char manobra){
-				if(disco == 1){
-					est = textArea.getText();
-					textArea.setText(est+"\nMovimento disco"+disco+" de "+origem+" para "+dest);
-				}else{
-					est = textArea.getText();
-					mov(disco -1, origem, manobra, dest);
-					textArea.setText(est+"\nMovimento disco "+disco+" de " +origem+" para "+dest);
-					mov(disco-1, manobra, dest, origem);
-				}
-			}
 			public void actionPerformed(ActionEvent e) {
 				try {
-					
 					int dis1 = Integer.parseInt(JOptionPane.showInputDialog(null,"Digite a quantidade de discos:","Discos",JOptionPane.INFORMATION_MESSAGE));
 					int res =(int) Math.pow(2, dis1)-1;
-					if(dis1 ==dis) {
-						est = textArea.getText();
-						textArea.setText(est+"\nOs movimentos são: ");
-						mov(dis1, 'A', 'C', 'B');
-					}else {
-						textArea.setText("O número mínimo de \nmovimentos é igual a "+res+"\n Os movimentos são: ");
-						mov(dis1, 'A', 'C', 'B');
-					}
+					String resu = mov(dis1, 'A', 'C', 'B');
+					textArea.setText("O nÃºmero mÃ­nimo de \nmovimentos Ã© igual a "+res+"\n\nOs movimentos sÃ£o:\n"+resu);
+					
 				}catch(Exception ae) {}
-
-
 			}
 		});
 		contentPane.add(btnParte_1);
